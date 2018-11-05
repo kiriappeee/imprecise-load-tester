@@ -1,0 +1,8 @@
+tests:
+  - name: buffer
+    url: "https://buffer.com/pricing"
+    iterations: 100
+  - name: vides
+    url: "https://buffer.com/video"
+    iterations: 50
+    enabled: true
