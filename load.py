@@ -5,15 +5,17 @@ import requests
 from datetime import datetime
 import yaml
 import math
+import urllib3
 
-def make_request(request_url):
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+def make_request(request_url, ssl_verify):
     """Make a request."""
-    return requests.get(request_url)
+    return requests.get(request_url, verify=ssl_verify)
 
 
-def run_test(test_url, results_arr, time_taken_arr, index):
+def run_test(test_url, ssl_verify, results_arr, time_taken_arr, index):
     t1 = datetime.now()
-    res = make_request(test_url)
+    res = make_request(test_url, ssl_verify)
     t2 = datetime.now()
     total_time = t2 - t1
     results_arr[index] = res.status_code
@@ -54,11 +56,12 @@ if __name__ == "__main__":
         w = open("{}-results.txt".format(test_name), 'w')
         test_url = test['url']
         iterations = test['iterations']
+        ssl_verify = test.get('verify', True)
         print("Running {} for {}".format(test_name, test_url))
         results = multiprocessing.Array('i', iterations)
         time_taken = multiprocessing.Array('f', iterations)
         for i in range(0, iterations):
-            multiprocessing.Process(target=run_test, args=(test_url, results, time_taken, i)).start()
+            multiprocessing.Process(target=run_test, args=(test_url, ssl_verify, results, time_taken, i)).start()
             print(i)
             sleep(random.randrange(1, 11, 1) / 10)
         while(multiprocessing.active_children()):

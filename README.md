@@ -18,4 +18,5 @@ elements:
 * `name`: Used to generate the results files (`name-results.txt`). Program does not check for uniqueness.
 * `url`: Url to load test
 * `iterations`: Number of times to load the url
-* `enabled` (OPTIONAL): Defaults to `true`. Use `enabled: false` if you want to disable a test.
+* `enabled` (OPTIONAL): Defaults to `true`. Use `false` if you want to disable a test.
+* `verify` (OPTIONAL): Defaults to `true`. Use `false` if you want to test against a URL without a matching SSL cert.
